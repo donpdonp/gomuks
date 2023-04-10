@@ -274,17 +274,15 @@ func (room *Room) MarkRead(eventID id.EventID) bool {
 		return false
 	}
 	room.lastMarkedRead = eventID
-	readToIndex := -1
+	readToIndex := len(room.UnreadMessages) - 1
 	for index, unreadMessage := range room.UnreadMessages {
 		if unreadMessage.EventID == eventID {
 			readToIndex = index
 		}
 	}
-	if readToIndex >= 0 {
-		room.UnreadMessages = room.UnreadMessages[readToIndex+1:]
-		room.highlightCache = nil
-		room.unreadCountCache = nil
-	}
+	room.UnreadMessages = room.UnreadMessages[readToIndex+1:]
+	room.highlightCache = nil
+	room.unreadCountCache = nil
 	return true
 }
 
